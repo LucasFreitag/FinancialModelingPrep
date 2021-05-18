@@ -10,7 +10,8 @@
         android:id="@+id/btnTeste"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="teste"/>
+        android:text="teste"
+        android:onClick="btTesteClick"/>
 
     <Button
         android:id="@+id/btnTeste2"
