@@ -12,8 +12,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        String teste = "Txt de teste";
-
-        // teste sinc
+        int a = 0 + 2;
     }
 }
