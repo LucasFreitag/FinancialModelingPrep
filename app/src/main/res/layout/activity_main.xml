@@ -6,17 +6,57 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/btnTeste"
+    <EditText
+        android:id="@+id/etSimbolo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="teste"
-        android:onClick="btTesteClick"/>
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="18dp" />
 
     <Button
-        android:id="@+id/btnTeste2"
+        android:id="@+id/btnConsultar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Segundo Btn"/>
+        android:onClick="btTesteClick"
+        android:text="Consultar"
+        android:layout_margin="5dp"/>
+
+    <TextView
+        android:id="@+id/tvNome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:textSize="14dp"
+        android:textAlignment="inherit"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/tvSimbolo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:textSize="14dp"
+        android:textAlignment="inherit"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/tvPreco"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:textSize="14dp"
+        android:textAlignment="inherit"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/tvAltaDia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:textSize="14dp"
+        android:textAlignment="inherit"
+        android:textColor="@color/black" />
+
 
 </LinearLayout>

@@ -3,12 +3,15 @@ package com.example.financialmodelingprep;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.financialmodelingprep.api.CepService;
-import com.example.financialmodelingprep.model.Cep;
+import com.example.financialmodelingprep.api.ICompanyQuoteService;
+import com.example.financialmodelingprep.model.CompanyQuote;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,15 +22,24 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
 
     private Retrofit retrofit;
+    private TextView tvNome, tvSimbolo, tvPreco, tvAltaDia;
+    private EditText etSimbolo;
 
+    private static final String API_KEY = "demo";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        tvNome = findViewById(R.id.tvNome);
+        tvSimbolo = findViewById(R.id.tvSimbolo);
+        tvPreco = findViewById(R.id.tvPreco);
+        tvAltaDia = findViewById(R.id.tvAltaDia);
+        etSimbolo = findViewById(R.id.etSimbolo);
+
         retrofit = new Retrofit.Builder()
-                .baseUrl("https://viacep.com.br/ws/")
+                .baseUrl("https://financialmodelingprep.com/api/v3/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -35,26 +47,36 @@ public class MainActivity extends AppCompatActivity {
 
     public void btTesteClick(View view) {
 
-        CepService cepService = retrofit.create(CepService.class);
-        Call<Cep> call = cepService.consultaCep();
-        Log.d("TAG", "antes do queue");
-        call.enqueue(new Callback<Cep>() {
+        String symbol = etSimbolo.getText().toString();
+        if (symbol.isEmpty()) {
+            Toast.makeText(this, "Informe o símbolo a ser consultado.", Toast.LENGTH_SHORT).show();
+            etSimbolo.requestFocus();
+            return;
+        }
+
+        ICompanyQuoteService companyQuoteService = retrofit.create(ICompanyQuoteService.class);
+        Call<List<CompanyQuote>> call = companyQuoteService.consultarCotacao(symbol, API_KEY);
+
+        call.enqueue(new Callback<List<CompanyQuote>>() {
             @Override
-            public void onResponse(Call<Cep> call, Response<Cep> response) {
-                if(response.isSuccessful()){
-                    Log.d("TAG", "Deu certo");
-                    Cep obj = response.body();
-                    Toast.makeText(MainActivity.this, "Localidade" + obj.getLocalidade() + "\nDDD: " + obj.getDdd(), Toast.LENGTH_SHORT).show();
+            public void onResponse(Call<List<CompanyQuote>> call, Response<List<CompanyQuote>> response) {
+                if (response.isSuccessful()) {
+                    List<CompanyQuote> obj = response.body();
+                    tvNome.setText("Nome: " + obj.get(0).getNome());
+                    tvSimbolo.setText("Símbolo: " + obj.get(0).getSimbolo());
+                    tvPreco.setText("Preço: " + obj.get(0).getPreco());
+                    tvAltaDia.setText("Alta do dia: " + obj.get(0).getAltaDia());
                 }
             }
 
             @Override
-            public void onFailure(Call<Cep> call, Throwable t)
-            {
-
-                Log.d("TAG", "Erro\n"+t.getMessage());
+            public void onFailure(Call<List<CompanyQuote>> call, Throwable t) {
+                tvNome.setText("Não foi possível consultar a cotação.\n" + t.getMessage());
+                System.out.println(t.getMessage());
             }
         });
-
     }
 }
+
+
+
