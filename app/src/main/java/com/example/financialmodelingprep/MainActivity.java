@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvNome, tvSimbolo, tvPreco, tvAltaDia;
     private EditText etSimbolo;
 
-    private static final String API_KEY = "demo";
+    private static final String API_KEY = "070c135253f538108a872767cc70ee21";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +42,9 @@ public class MainActivity extends AppCompatActivity {
                 .baseUrl("https://financialmodelingprep.com/api/v3/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-
     }
 
-    public void btTesteClick(View view) {
+    public void btConsultarClick(View view) {
 
         String symbol = etSimbolo.getText().toString();
         if (symbol.isEmpty()) {
@@ -76,6 +75,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    
+
+
 }
 
 
