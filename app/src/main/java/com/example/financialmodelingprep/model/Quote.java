@@ -43,4 +43,5 @@ public class Quote {
     public void setExchange(String exchange) {
         this.exchange = exchange;
     }
+
 }
