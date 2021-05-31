@@ -54,7 +54,6 @@ public class QuoteActivity extends AppCompatActivity {
                 Toast.makeText(this, "Erro ao consultar cotação.\n" + ex.getMessage(), Toast.LENGTH_LONG).show();
             }
         }
-
     }
 
     private void consultaSimbolo(String simbolo, Retrofit retrofit) {
