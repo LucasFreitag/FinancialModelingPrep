@@ -1,6 +1,18 @@
 package com.example.financialmodelingprep.model;
 
+import android.view.View;
+import android.widget.Toast;
+
+import com.example.financialmodelingprep.api.ICompanyQuoteService;
+import com.example.financialmodelingprep.view.MainActivity;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class CompanyQuote {
 
@@ -187,4 +199,5 @@ public class CompanyQuote {
     public void setPe(double pe) {
         this.pe = pe;
     }
+
 }

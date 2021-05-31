@@ -1,10 +1,11 @@
-package com.example.financialmodelingprep;
+package com.example.financialmodelingprep.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,13 +14,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.financialmodelingprep.R;
 import com.example.financialmodelingprep.api.ICompanyQuoteService;
 import com.example.financialmodelingprep.helper.Adapter;
 import com.example.financialmodelingprep.helper.RecyclerItemClickListener;
 import com.example.financialmodelingprep.model.CompanyQuote;
 import com.example.financialmodelingprep.model.Quote;
 
+import java.io.Serializable;
 import java.util.List;
+import java.util.Random;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private Adapter adapter;
     private List<Quote> lstQuotes;
 
-    private static final String API_KEY = "070c135253f538108a872767cc70ee21";
+    public static final String API_KEY = "070c135253f538108a872767cc70ee21";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +69,11 @@ public class MainActivity extends AppCompatActivity {
                 if (lstQuotes == null || lstQuotes.size() == 0) return;
 
                 Quote quote = lstQuotes.get(position);
-                Toast.makeText(MainActivity.this, "Item pressionado " + quote.getNome(), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(MainActivity.this, QuoteActivity.class);
+                String simbolo = quote.getSimbolo();
+                intent.putExtra("simbolo", simbolo);
+
+                startActivity(intent);
             }
 
             @Override
@@ -78,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
             }
         }));
     }
