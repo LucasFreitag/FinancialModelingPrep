@@ -34,7 +34,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
 
     private Retrofit retrofit;
-    private TextView tvNome, tvSimbolo, tvPreco, tvAltaDia;
     private EditText etSimbolo;
     private View lytRecyler;
 
@@ -49,10 +48,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        tvNome = findViewById(R.id.tvNome);
-        tvSimbolo = findViewById(R.id.tvSimbolo);
-        tvPreco = findViewById(R.id.tvPreco);
-        tvAltaDia = findViewById(R.id.tvAltaDia);
         etSimbolo = findViewById(R.id.etSimbolo);
         lytRecyler = findViewById(R.id.lytRecyler);
         recyclerView = findViewById(R.id.recyclerView);
@@ -88,38 +83,8 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             }
         }));
-    }
 
-    private void consultaSimbolo(String simbolo) {
-        ICompanyQuoteService companyQuoteService = retrofit.create(ICompanyQuoteService.class);
-        Call<List<CompanyQuote>> call = companyQuoteService.consultarCotacao(simbolo, API_KEY);
-
-        call.enqueue(new Callback<List<CompanyQuote>>() {
-            @Override
-            public void onResponse(Call<List<CompanyQuote>> call, Response<List<CompanyQuote>> response) {
-                if (response.isSuccessful()) {
-                    List<CompanyQuote> obj = response.body();
-                    if (obj != null && obj.size() > 0) {
-                        lytRecyler.setVisibility(View.INVISIBLE);
-                        tvNome.setVisibility(View.VISIBLE);
-                        tvSimbolo.setVisibility(View.VISIBLE);
-                        tvPreco.setVisibility(View.VISIBLE);
-                        tvAltaDia.setVisibility(View.VISIBLE);
-
-                        tvNome.setText("Nome: " + obj.get(0).getNome());
-                        tvSimbolo.setText("Símbolo: " + obj.get(0).getSimbolo());
-                        tvPreco.setText("Preço: " + obj.get(0).getPreco());
-                        tvAltaDia.setText("Alta do dia: " + obj.get(0).getAltaDia());
-                    } else
-                        Toast.makeText(MainActivity.this, "Cotação consultada não encontrada.", Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<CompanyQuote>> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Não foi possível consultar a cotação.\n" + t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
+        consultaTodosSimbolos();
     }
 
     private void consultaTodosSimbolos() {
@@ -131,11 +96,6 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<List<Quote>> call, Response<List<Quote>> response) {
                 if (response.isSuccessful()) {
                     lstQuotes = response.body();
-
-                    tvNome.setVisibility(View.INVISIBLE);
-                    tvSimbolo.setVisibility(View.INVISIBLE);
-                    tvPreco.setVisibility(View.INVISIBLE);
-                    tvAltaDia.setVisibility(View.INVISIBLE);
 
                     adapter = new Adapter(lstQuotes);
 
@@ -162,16 +122,15 @@ public class MainActivity extends AppCompatActivity {
             String symbol = etSimbolo.getText().toString();
             if (symbol.isEmpty()) {
                 consultaTodosSimbolos();
-            } else
-                consultaSimbolo(symbol);
+            } else {
+                Intent intent = new Intent(MainActivity.this, QuoteActivity.class);
+                intent.putExtra("simbolo", symbol);
+                startActivity(intent);
+            }
         } catch (Exception ex) {
             Toast.makeText(this, "Ocorreu um erro durante a solicitação.\n" + ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
-
-
     }
-
-
 }
 
 

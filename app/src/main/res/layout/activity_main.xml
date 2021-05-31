@@ -22,48 +22,11 @@
         android:onClick="btConsultarClick"
         android:text="Consultar" />
 
-        <TextView
-            android:id="@+id/tvNome"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:textAlignment="inherit"
-            android:textColor="@color/black"
-            android:textSize="14dp" />
-
-        <TextView
-            android:id="@+id/tvSimbolo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:textAlignment="inherit"
-            android:textColor="@color/black"
-            android:textSize="14dp" />
-
-        <TextView
-            android:id="@+id/tvPreco"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:textAlignment="inherit"
-            android:textColor="@color/black"
-            android:textSize="14dp" />
-
-        <TextView
-            android:id="@+id/tvAltaDia"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:textAlignment="inherit"
-            android:textColor="@color/black"
-            android:textSize="14dp"/>
-
     <include
         android:id="@+id/lytRecyler"
         layout="@layout/layout_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="visible" />
-
 
 </LinearLayout>
