@@ -13,7 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FinancialModelingPrep">
-        <activity android:name=".view.SplashScreenActivity" android:theme="@style/splashScreenTheme">
+        <activity android:name=".view.IntroInfoActivity" android:theme="@style/splashScreenTheme"></activity>
+        <activity
+            android:name=".view.SplashScreenActivity"
+            android:theme="@style/splashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.QuoteActivity" />
-        <activity android:name=".view.MainActivity"></activity>
+        <activity android:name=".view.MainActivity" />
     </application>
 
 </manifest>
