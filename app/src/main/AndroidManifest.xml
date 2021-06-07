@@ -13,18 +13,22 @@
         android:roundIcon="@mipmap/quotationicon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FinancialModelingPrep">
-        <activity android:name=".view.IntroInfoActivity" android:theme="@style/splashScreenTheme"></activity>
+        <activity android:name=".view.IntroInfoActivity" android:theme="@style/splashScreenTheme"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".view.SplashScreenActivity"
-            android:theme="@style/splashScreenTheme">
+            android:theme="@style/splashScreenTheme"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.QuoteActivity" />
-        <activity android:name=".view.MainActivity" />
+        <activity android:name=".view.QuoteActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".view.MainActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
