@@ -5,9 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.Preference;
 
 import com.example.financialmodelingprep.R;
+import com.example.financialmodelingprep.helper.Preference;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
@@ -22,8 +22,14 @@ public class SplashScreenActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
-                finish();
+                if (preference.recuperarPreferencia()) {
+                    startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
+                    finish();
+                } else {
+                    preference.salvarPreferencia(true);
+                    startActivity(new Intent(SplashScreenActivity.this, IntroInfoActivity.class));
+                    finish();
+                }
             }
         }, 2000);
 
