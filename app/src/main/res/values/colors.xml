@@ -8,4 +8,5 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFF</color>
     <color name="colorBtnStart">#FF95CB7F</color>
+    <color name="colorChart">#FF2414</color>
 </resources>

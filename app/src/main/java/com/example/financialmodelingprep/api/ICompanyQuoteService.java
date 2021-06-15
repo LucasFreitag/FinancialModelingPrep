@@ -1,6 +1,7 @@
 package com.example.financialmodelingprep.api;
 
 import com.example.financialmodelingprep.model.CompanyQuote;
+import com.example.financialmodelingprep.model.IncomeStatement;
 import com.example.financialmodelingprep.model.Quote;
 
 import java.util.List;
@@ -17,4 +18,8 @@ public interface ICompanyQuoteService {
 
     @GET("stock/list")
     Call<List<Quote>> obterTodosSimbolos(@Query("apikey") String apiKey);
+
+    @GET("income-statement/{symbol}")
+    Call<List<IncomeStatement>> obterReceita(@Path("symbol") String simbolo, @Query("apikey") String apiKey, @Query("limit") String limit);
+
 }

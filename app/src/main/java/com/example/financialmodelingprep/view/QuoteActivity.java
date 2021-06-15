@@ -11,12 +11,14 @@ import android.widget.Toast;
 import com.example.financialmodelingprep.R;
 import com.example.financialmodelingprep.api.ICompanyQuoteService;
 import com.example.financialmodelingprep.model.CompanyQuote;
+import com.example.financialmodelingprep.model.IncomeStatement;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import lecho.lib.hellocharts.gesture.ContainerScrollType;
 import lecho.lib.hellocharts.gesture.ZoomType;
+import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.Line;
 import lecho.lib.hellocharts.model.LineChartData;
 import lecho.lib.hellocharts.model.PointValue;
@@ -30,8 +32,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class QuoteActivity extends AppCompatActivity {
 
-    TextView tvSimboloQuote, tvNomeQuote, tvPrecoQuote, tvPercMudancaQuote, tvBaixaDiaQuote, tvAltaDiaQuote, tvBaixaAnoQuote, tvAltaAnoQuote;
-    LineChartView grafico;
+    private TextView tvSimboloQuote, tvNomeQuote, tvPrecoQuote, tvPercMudancaQuote, tvBaixaDiaQuote, tvAltaDiaQuote, tvBaixaAnoQuote, tvAltaAnoQuote;
+    private LineChartView grafico;
+    private List<IncomeStatement> receitas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +49,7 @@ public class QuoteActivity extends AppCompatActivity {
         tvAltaDiaQuote = findViewById(R.id.tvAltaDiaQuote);
         tvBaixaAnoQuote = findViewById(R.id.tvBaixaAnoQuote);
         tvAltaAnoQuote = findViewById(R.id.tvAltaAnoQuote);
-        grafico = (LineChartView)findViewById(R.id.chart);
+        grafico = (LineChartView) findViewById(R.id.chart);
 
         Bundle dados = getIntent().getExtras();
         String simbolo = dados.getString("simbolo");
@@ -61,44 +64,58 @@ public class QuoteActivity extends AppCompatActivity {
         else {
             try {
                 consultaSimbolo(simbolo, retrofit);
-                GerarGrafico("");
+                consultaReceita(simbolo, retrofit);
             } catch (Exception ex) {
                 Toast.makeText(this, "Erro ao consultar cotação.\n" + ex.getMessage(), Toast.LENGTH_LONG).show();
             }
         }
-
-
-
-
-
-
     }
 
-    private void GerarGrafico(String simbolo){
+    private void GerarGrafico() {
+
+        if (receitas == null || receitas.size() == 0) return;
 
         grafico.setInteractive(true);
         grafico.setContainerScrollEnabled(true, ContainerScrollType.HORIZONTAL);
+        grafico.setContainerScrollEnabled(true, ContainerScrollType.VERTICAL);
         grafico.setMaxZoom(2.0F);
-        grafico.setPadding(2, 2, 2, 2);
+        grafico.setPadding(5, 5, 5, 5);
 
         List<PointValue> valores = new ArrayList<PointValue>();
-        valores.add(new PointValue(1,2));
-        valores.add(new PointValue(1,4));
-        valores.add(new PointValue(3,1));
-        valores.add(new PointValue(5,2));
-        valores.add(new PointValue(5,3));
 
+        for (int i = 0; i < receitas.size(); i++)
+            valores.add(new PointValue(i, receitas.get(i).getReceita()).setLabel(receitas.get(i).getReceitaEDataFormatada()));
 
-        Line line = new Line(valores).setColor(Color.BLUE).setCubic(true);
+        Line line = new Line(valores).setCubic(true).setHasLabels(true).setColor(R.color.colorChart).setPointColor(Color.BLACK);
         List<Line> lines = new ArrayList<Line>();
         lines.add(line);
 
         LineChartData data = new LineChartData();
         data.setLines(lines);
 
-
         grafico.setLineChartData(data);
         grafico.setVisibility(View.VISIBLE);
+    }
+
+    private void consultaReceita(String simbolo, Retrofit retrofit) {
+        ICompanyQuoteService companyQuoteService = retrofit.create(ICompanyQuoteService.class);
+        Call<List<IncomeStatement>> call = companyQuoteService.obterReceita(simbolo, MainActivity.API_KEY, "5");
+
+        call.enqueue(new Callback<List<IncomeStatement>>() {
+            @Override
+            public void onResponse(Call<List<IncomeStatement>> call, Response<List<IncomeStatement>> response) {
+                if (response.isSuccessful()) {
+                    receitas = response.body();
+                    GerarGrafico();
+                } else
+                    Toast.makeText(QuoteActivity.this, "Não foi possível consultar receita.", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(Call<List<IncomeStatement>> call, Throwable t) {
+                Toast.makeText(QuoteActivity.this, "Não foi possível consultar receita.\n" + t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void consultaSimbolo(String simbolo, Retrofit retrofit) {

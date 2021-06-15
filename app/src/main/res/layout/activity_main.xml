@@ -10,6 +10,7 @@
         android:id="@+id/etSimbolo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="textCapSentences|textCapWords|textCapCharacters"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="18dp" />
