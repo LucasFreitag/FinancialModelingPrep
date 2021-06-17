@@ -14,6 +14,7 @@ import com.example.financialmodelingprep.model.CompanyQuote;
 import com.example.financialmodelingprep.model.IncomeStatement;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import lecho.lib.hellocharts.gesture.ContainerScrollType;
@@ -32,7 +33,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class QuoteActivity extends AppCompatActivity {
 
-    private TextView tvSimboloQuote, tvNomeQuote, tvPrecoQuote, tvPercMudancaQuote, tvBaixaDiaQuote, tvAltaDiaQuote, tvBaixaAnoQuote, tvAltaAnoQuote;
+    private TextView tvSimboloQuote, tvNomeQuote, tvPrecoQuote, tvPercMudancaQuote, tvBaixaDiaQuote, tvAltaDiaQuote, tvBaixaAnoQuote, tvAltaAnoQuote, tvChartIndps;
     private LineChartView grafico;
     private List<IncomeStatement> receitas;
 
@@ -50,6 +51,7 @@ public class QuoteActivity extends AppCompatActivity {
         tvBaixaAnoQuote = findViewById(R.id.tvBaixaAnoQuote);
         tvAltaAnoQuote = findViewById(R.id.tvAltaAnoQuote);
         grafico = (LineChartView) findViewById(R.id.chart);
+        tvChartIndps = findViewById(R.id.tvChartInds);
 
         Bundle dados = getIntent().getExtras();
         String simbolo = dados.getString("simbolo");
@@ -73,7 +75,15 @@ public class QuoteActivity extends AppCompatActivity {
 
     private void GerarGrafico() {
 
-        if (receitas == null || receitas.size() == 0) return;
+        if (receitas == null || receitas.size() == 0){
+            tvChartIndps.setVisibility(View.VISIBLE);
+            grafico.setVisibility(View.GONE);
+            return;
+        }
+        tvChartIndps.setVisibility(View.INVISIBLE);
+        grafico.setVisibility(View.VISIBLE);
+
+        Collections.reverse(receitas);
 
         grafico.setInteractive(true);
         grafico.setContainerScrollEnabled(true, ContainerScrollType.HORIZONTAL);
@@ -94,7 +104,6 @@ public class QuoteActivity extends AppCompatActivity {
         data.setLines(lines);
 
         grafico.setLineChartData(data);
-        grafico.setVisibility(View.VISIBLE);
     }
 
     private void consultaReceita(String simbolo, Retrofit retrofit) {
